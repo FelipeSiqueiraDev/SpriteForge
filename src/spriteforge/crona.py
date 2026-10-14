@@ -85,7 +85,7 @@ def export_crona(bundle, output: Path):
                 points = []
                 for side in ("left", "right"):
                     ankle = np.array(current["joints"][side+"_ankle"])
-                    foot = ankle + (0, 1.8, -4)
+                    foot = np.array(current["feet"][side]) if "feet" in current else ankle + (0, 1.8, -4)
                     foot_world = rotate_local(foot, direction)
                     projected = project_model(foot_world, origin=(0, 0))
                     air = max(0, foot[2])*METRES_PER_MODEL_UNIT*VERTICAL_PX_PER_METRE

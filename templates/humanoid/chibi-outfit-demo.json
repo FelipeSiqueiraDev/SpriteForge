@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "chibi-outfit-demo",
+  "name": "Chibi vestido — estudo modular, não é Alosi",
+  "model": "chibi-v3",
+  "body_color": "#e8ac83",
+  "outfit": {"shirt": "#527e7c", "trousers": "#414d5a", "boots": "#80583f"},
+  "hair": "#734831",
+  "beard": "#734831",
+  "glasses": "#302a28",
+  "scar": "#986e64"
+}

@@ -12,7 +12,7 @@ permissions:
 jobs:
   validate-and-export:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
@@ -35,12 +35,13 @@ jobs:
           from pathlib import Path
           ids = {'training-dummy'}
           appearances = []
-          for recipe in sorted(Path('templates/humanoid').glob('*.json')):
+          recipes = sorted(Path('templates/humanoid').glob('*.json'), key=lambda p: (p.stem != 'chibi-base', p.name))
+          for recipe in recipes:
               character_id = json.loads(recipe.read_text(encoding='utf-8'))['id']
               if character_id in ids:
                   raise ValueError(f'ID duplicado: {character_id}')
               ids.add(character_id)
-              subprocess.run(['spriteforge', 'rig', str(recipe), '--output', 'demo-input'], check=True)
+              subprocess.run(['spriteforge', 'rig', str(recipe), '--output', 'demo-input', '--workers', '2'], check=True)
               subprocess.run(['spriteforge', 'build', f'demo-input/{character_id}/manifest.json', '--output', 'dist'], check=True)
               subprocess.run(['spriteforge', 'crona', f'demo-input/{character_id}/manifest.json', '--output', 'dist/crona'], check=True)
               appearances.append(f'dist/{character_id}')
@@ -54,6 +55,11 @@ jobs:
           PY
           python scripts/render_rig_previews.py --output dist/previews
           python scripts/render_crona_preview.py --output dist/previews
+          python scripts/render_chibi_previews.py --output dist/previews
+          python scripts/audit_chibi_exports.py
+          python scripts/assemble_reference_walk.py art-direction/chibi-reference-walk/walk-sheet.png dist/previews/reference-walk
+          cp -r art-direction dist/art-direction
+          cp delivery/LEIA-ME.txt dist/LEIA-ME.txt
           mkdir -p build
           git show 178baeee662d07bb6bf2cd9bc483b0876d8786be:src/spriteforge/rig.py > build/rig-v1.py
           git show 178baeee662d07bb6bf2cd9bc483b0876d8786be:templates/humanoid/base.json > build/base-v1.json
@@ -67,6 +73,10 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Testar prévia no navegador
         run: node tests/preview.cjs
+      - name: Montar e conferir animação 2D da referência
+        run: |
+          node scripts/build_reference_puppet.cjs art-direction/chibi-reference-puppet/parts.png dist/previews/reference-puppet
+          python scripts/encode_reference_puppet.py dist/previews/reference-puppet
       - name: Guardar pacote de prévias e sprites
         uses: actions/upload-artifact@v4
         with:

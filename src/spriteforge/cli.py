@@ -16,6 +16,7 @@ def main(argv=None):
     rig = commands.add_parser("rig", help="Renderiza o corpo-base articulado com uma receita de aparência")
     rig.add_argument("recipe", type=Path)
     rig.add_argument("--output", type=Path, default=Path("demo-input"))
+    rig.add_argument("--workers", type=int, default=1, help="Processos de renderização, de 1 a 8")
     wardrobe = commands.add_parser("wardrobe", help="Compara aparências já exportadas no mesmo visualizador")
     wardrobe.add_argument("directories", type=Path, nargs="+")
     wardrobe.add_argument("--output", type=Path, default=Path("dist/wardrobe.html"))
@@ -49,7 +50,7 @@ def main(argv=None):
             print(args.output)
         elif args.command == "rig":
             from .rig import generate_rig
-            print(generate_rig(args.recipe, args.output))
+            print(generate_rig(args.recipe, args.output, args.workers))
         elif args.command == "demo":
             from .demo import generate_demo
             print(generate_demo(args.output))

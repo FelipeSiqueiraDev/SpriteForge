@@ -1,0 +1,38 @@
+Ferramenta: imagegen integrada. Todos os prompts abaixo são novos, não o prompt histórico.
+
+EXTRAÇÃO DA VISTA
+Use case: background-extraction / identity-preserve.
+Edit target: the attached approved SpriteForge character sheet. Extract ONLY the middle character (the standing three-quarter view facing screen right) as a single full-body character on a genuinely transparent background. Remove the front and rear characters and the entire dark background, glow and ground shadow.
+Strict preservation: retain the middle character's exact identity, silhouette, pose, proportions, face, large brown anime eyes, shaped dark eyebrows, ears, bald head, warm peach skin, cream sweatshirt with its original folds and cuffs, cream trousers and brown shoes. Keep its existing detailed pixel-art rendering, dark brown outline, shading, colors and facial expression. Do not reinterpret, redesign, simplify into geometric shapes, change perspective, change clothing, add hair, change head-to-body ratio, shorten the legs, add outlines or invent accessories. This is an extraction of the approved drawing, not a new character concept. The head and shoes must be fully visible. Center the isolated character with modest transparent margins. No text, labels, panels, checkerboard or background.
+
+CAMINHADA, FOLHA INICIAL
+Use case: identity-preserve.
+Asset type: SIX consecutive animation frames of the exact attached approved bald character, for a looping in-place walk.
+Edit target and identity master: the attached single three-quarter character. Preserve this character, not a reinterpretation. The face, tall rounded cranium with defined chin, large brown eyes, dark shaped eyebrows, ears, body proportions, cream sweatshirt, cream trousers, brown shoes, dark brown pixel outline and detailed pixel-art shading must remain identical throughout. No new character design.
+Deliver a LANDSCAPE sprite sheet exactly 3 equal columns by 2 equal rows, reading order left-to-right top row then bottom row. Aim for 1536x1024, each of six equal square cells 512x512. Exactly ONE full-body character per cell, all same scale, same three-quarter front view facing screen-right, same camera and lighting. Identical face and head shape across all six cells. Character about 450 pixels tall per cell, head completely inside with top margin, feet inside with bottom margin, root centered at the same cell coordinates. No panels, borders, text, numbers or extra characters.
+Walk motion: animate the LEGS AND ARMS, with natural joint bends and opposite arm/leg swing. Six phases spanning one entire cycle, no repeated first frame:
+1. Near leg (screen-left leg) forward heel contact; far leg behind toe contact; near arm back, far arm forward.
+2. Near leg supports weight with slight knee flex; far knee swings through under pelvis with its foot lifted; arms pass toward neutral.
+3. Far leg advances, its foot lifted and extending toward next heel contact; near leg trails with heel raised; opposite arms swing.
+4. Far leg forward heel contact; near leg behind toe contact; far arm back, near arm forward.
+5. Far leg supports weight with slight knee flex; near knee swings through under pelvis with its foot lifted; arms pass toward neutral.
+6. Near leg advances, its foot lifted and extending toward frame 1 heel contact; far leg trails with heel raised; opposite arms swing.
+Keep an upright relaxed torso and unchanged head orientation, only very slight vertical body bob. Keep anatomical proportions and limb lengths consistent. Walking IN PLACE, no translation between cells. Hands are relaxed and empty. Clear leg separation and alternating supporting feet; this must be a walk, not six static poses.
+Background: genuinely transparent alpha. NO ground shadow, glow, colored backdrop, checkerboard, objects, floor or scenery. Preserve the reference pixel-art drawing and its recognizable face. Do not flatten, squash or widen the head. Do not turn the character into a low-detail geometric mannequin.
+
+CORREÇÃO DA FOLHA
+Use case: precise-object-edit / identity-preserve.
+Edit target Image 1: the six-frame walk sheet. Identity master Image 2: the approved isolated character.
+Fix the WALK CYCLE in Image 1. Preserve its 3-column by 2-row equal-cell layout and the approved character's head, face, detailed pixel art, clothes and proportions. All six characters must have the EXACT SAME three-quarter camera orientation as the top-left frame. In particular, fix the bottom-right frame's turned torso and the bottom row's smaller face. Lock the skull and face drawing from the top-left frame across all six frames, allowing just tiny vertical motion.
+Critical anatomical correction: right now the same leg is forward too often, and the arms do not alternate. The bottom row must be the OPPOSITE LEG'S half-cycle:
+TOP ROW:
+1. Near leg, originating at the screen-left side of the pelvis, extends forward toward screen-right, heel landing. Far leg trails toward screen-left. Near arm swings backward (toward screen-left), far arm forward.
+2. Near foot planted beneath the body; far knee swings forward under the pelvis, far foot visibly lifted behind. Arms passing neutral.
+3. Near leg trails, far knee advances and far foot extends forward, heel raised before landing. Near arm forward, far arm back.
+BOTTOM ROW:
+4. Far leg, originating at the screen-right side of the pelvis, extends forward toward screen-right and its heel lands. Near leg, originating at the screen-left side of pelvis, trails back toward screen-left. SHOW the near leg on the LEFT going BACKWARDS; the far leg on the RIGHT going FORWARDS. Near arm is FORWARD across the front of the torso (hand toward screen-right), far arm swings backward.
+5. Far foot supports beneath the body; NEAR knee lifts and passes forward under pelvis, near foot visibly off the floor. Near arm returning toward neutral.
+6. Near leg advances and extends its foot forward just before landing into frame 1; far leg trails with heel raised. Near arm BACKWARD, far arm forward. Do NOT rotate the body.
+No duplicated contact poses on the same leg. No bent rubber limbs or changing limb lengths. Gentle torso bob only. Keep the head upright and the reference face unchanged.
+All six characters same size, one per equal square cell, at matching root position, with full head and shoes in frame. Genuinely transparent background. No floor, glow, shadows, text, grid, frame borders or checkerboard. Return the complete corrected six-frame sheet.
+

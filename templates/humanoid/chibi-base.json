@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "id": "chibi-base",
+  "name": "Chibi — direção aprovada, animação em estudo",
+  "model": "chibi-v3",
+  "body_color": "#e8ac83",
+  "outfit": {"shirt": "#eee0c9", "trousers": "#e6d6bd", "boots": "#80583f"},
+  "hair": null,
+  "beard": null,
+  "glasses": null,
+  "scar": null
+}

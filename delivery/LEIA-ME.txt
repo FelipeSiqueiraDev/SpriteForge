@@ -1,0 +1,33 @@
+SPRITEFORGE — CAREQUINHA COM MOVIMENTO CONTÍNUO
+
+Abra previews/reference-puppet/preview.html para ver a nova prova 2D.
+O rosto permanece igual e os braços/pernas seguem articulações contínuas.
+Use pausa, avanço, velocidade e repouso para examinar os 32 quadros do loop.
+GIF, APNG, PNGs, rig e validação estão nessa mesma pasta.
+É um teste em uma vista, ainda sem calibração ou instalação no CRONA.
+
+ESTUDOS ANTERIORES (VISUAL DO MANEQUIM V3 REJEITADO PELO USUÁRIO)
+
+Extraia o ZIP inteiro e abra wardrobe.html.
+Escolha a aparência chibi, a ação idle (parado) ou walk (caminhada).
+Use Pausar, Avançar frame, Velocidade e Mostrar ponto de apoio para revisar.
+Não é necessário instalar nada nem estar conectado para usar a prévia.
+
+chibi-base/ e chibi-outfit-demo/: 80 frames por aparência, folhas, GIFs,
+atlas, relatório e máscaras de partes visíveis.
+crona/: tiras e anim.json v2 no formato do tabuleiro.
+previews/: oito vistas, caminhada, comparação de peças e conferência no piso.
+art-direction/: proposta original aprovada, referências e novo guia visual.
+chibi-validation.json: auditoria dos pixels e metadados das exportações.
+
+O guia artístico é uma imagem de referência com fundo; os sprites transparentes
+de jogo estão nos pacotes chibi-base e chibi-outfit-demo.
+O exemplo vestido não é o Alosi. A identidade dos protagonistas ainda precisa
+de suas peças próprias. Esta entrega não foi instalada no CRONA.
+
+Os avisos de apoio medem o último pixel visível em relação ao centro da célula.
+As pontas dos sapatos podem ultrapassar esse centro durante a passada.
+O ponto físico dos pés está registrado por pose e auditado separadamente.
+O contato em uma sessão real do CRONA ainda precisa ser conferido.
+
+As duas aparências v2 e o boneco técnico permanecem no pacote para comparação.

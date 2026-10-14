@@ -1,5 +1,15 @@
 # SpriteForge
 
+**Revisão visual: movimento contínuo do carequinha.** Após a rejeição do manequim v3 e das variações no primeiro loop desenhado, a nova prova usa um único conjunto de peças 2D, cabeça fixa e membros articulados. São **32 quadros em 960ms**, em uma vista. [Origem, prompts, geração e limites](art-direction/chibi-reference-puppet/README.md).
+
+![Prova de movimento contínuo do carequinha](previews/carequinha-puppet-walk.gif)
+
+O rosto usa os mesmos pixels em todos os quadros. Ombros, cotovelos, quadris e joelhos seguem articulações com comprimentos constantes; o sapato não gira junto com a canela durante o apoio. Ainda há emendas de peças e limites do movimento 2D. Esta prova não está calibrada nem instalada no CRONA e não é a entrega final em oito direções.
+
+[Arte original e referências](art-direction/chibi-v3/README.md) · [Estudo procedural rejeitado](docs/chibi-animation.md).
+
+No pacote de Actions, abra `previews/reference-puppet/preview.html` para pausar, avançar quadros, mudar a velocidade ou escolher repouso. O HTML é autossuficiente. O `wardrobe.html` e `previews/reference-walk/` preservam os estudos anteriores para comparação. Os protagonistas ainda não estão prontos.
+
 Nossa oficina de pixel art para o tabuleiro da Equipe Hydra: personagens, NPCs, monstros e skins dos lugares existentes no CRONA.
 
 **Skins de ambientes:** o CRONA define a planta e os móveis; o SpriteForge organiza a aparência sobre os mesmos IDs. Primeiro lote: nove modelos da cozinha, 40 PNGs nos quatro giros e estados, mais piso e paredes nativos. O catálogo registra 268 objetos e deixa os outros 259 na fila deste perfil. A seleção de skin por cômodo ainda precisa ser integrada no CRONA com o Claude.
