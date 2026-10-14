@@ -1,14 +1,14 @@
 # SpriteForge
 
-**Retomada: chibi animado v3.** A direção visual aprovada no chat foi recuperada e preservada com as três referências em [art-direction/chibi-v3](art-direction/chibi-v3/README.md). A nova base tem rosto definido, camiseta/calça claras e sapatos marrons, com **oito direções, quatro frames de parado e seis de caminhada**. Há uma segunda aparência para conferir cabelo, barba, óculos e roupa acompanhando as mesmas poses. Os protagonistas ainda não estão prontos; essa aparência de teste não representa o Alosi.
+**Revisão visual: animar o carequinha da referência.** O usuário rejeitou o personagem procedural v3 e pediu proporções aceitáveis, preservando o personagem da imagem. A nova prova usa quadros desenhados com referência direta: uma caminhada de quatro quadros em três quartos. [Origem, prompts e limites](art-direction/chibi-reference-walk/README.md).
 
-![Nova base articulada chibi em oito direções](previews/chibi-base.png)
+![Primeira prova de caminhada a partir da referência](previews/carequinha-reference-walk.gif)
 
-![Caminhada da base chibi, oito direções](previews/chibi-walk.gif)
+Ainda há diferenças entre os desenhos dos quadros e a passada precisa de refinamento. Esta prova não está calibrada nem instalada no CRONA e não é a entrega final em oito direções.
 
-[No piso do CRONA](previews/chibi-crona.png) · [Comparar v2 e v3](previews/chibi-before-after.png) · [Peças seguindo o mesmo movimento](previews/chibi-modular.gif) · [Frames da passada SE](previews/chibi-walk-SE.png) · [Como gerar e revisar](docs/chibi-animation.md).
+[Arte original e referências](art-direction/chibi-v3/README.md) · [Estudo procedural rejeitado](docs/chibi-animation.md).
 
-O `wardrobe.html` do pacote agora abre na base chibi e inclui as quatro aparências, inclusive as duas anteriores para comparação. A arte conceitual é referência; os PNGs de jogo são produzidos pela geometria articulada. A aparência e a movimentação ainda precisam de revisão visual e teste no tabuleiro antes da produção dos protagonistas.
+O `wardrobe.html` ainda contém os estudos procedurais antigos para comparação. A prova desenhada fica em `previews/reference-walk/` no pacote de Actions. Os protagonistas ainda não estão prontos.
 
 Nossa oficina de pixel art para o tabuleiro da Equipe Hydra: personagens, NPCs, monstros e skins dos lugares existentes no CRONA.
 

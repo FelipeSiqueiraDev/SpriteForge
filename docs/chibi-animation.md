@@ -1,5 +1,7 @@
 # Base chibi e animações v3
 
+**Estado: visual rejeitado pelo usuário.** A cabeça e as proporções deste manequim não atenderam ao pedido. Os testes descritos abaixo validam aspectos técnicos, sem comprovar fidelidade ou qualidade visual. A abordagem atual está registrada em [caminhada desenhada a partir da referência](../art-direction/chibi-reference-walk/README.md). Este documento preserva o estudo procedural como histórico.
+
 A nova geometria adapta a direção visual aprovada para uma base articulada, com rosto/mandíbula definidos, tronco estruturado, mangas, calça e sapatos. Ela não recorta nem deforma a imagem conceitual. Cada direção e pose é rasterizada pela câmera do CRONA, com profundidade por pixel. A versão v2 continua disponível, sem substituir as receitas antigas.
 
 ## Entrega

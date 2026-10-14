@@ -18,4 +18,4 @@ As duas referências de personagem não transformam a aparência genérica de te
 
 O prompt original da proposta de três vistas não foi recuperado. O texto novo não deve ser apresentado como o prompt histórico.
 
-A base articulada correspondente está em `templates/humanoid/chibi-base.json`; sua implementação está em `src/spriteforge/chibi.py`. O registro do rig usa `chibi-v3-study` e a exportação mantém o contrato do CRONA.
+A tentativa procedural em `templates/humanoid/chibi-base.json` e `src/spriteforge/chibi.py` foi rejeitada pelo usuário por suas proporções e cabeça. Ela não representa a direção aprovada. A nova prova de animação desenhada está em [chibi-reference-walk](../chibi-reference-walk/README.md).

@@ -57,6 +57,7 @@ jobs:
           python scripts/render_crona_preview.py --output dist/previews
           python scripts/render_chibi_previews.py --output dist/previews
           python scripts/audit_chibi_exports.py
+          python scripts/assemble_reference_walk.py art-direction/chibi-reference-walk/walk-sheet.png dist/previews/reference-walk
           cp -r art-direction dist/art-direction
           cp delivery/LEIA-ME.txt dist/LEIA-ME.txt
           mkdir -p build
