@@ -1,5 +1,7 @@
 # Caminhada a partir do desenho de referência
 
+**Estudo anterior.** O usuário apontou variações e braços que pareciam bugados nesta primeira sequência. A prova atual usa [peças fixas e movimento contínuo](../chibi-reference-puppet/README.md).
+
 O usuário rejeitou a cabeça e as proporções do manequim procedural v3. Pediu animar o próprio carequinha da referência, com proporções aceitáveis. Esta pasta registra a mudança de abordagem: quadros desenhados pelo imagegen usando a imagem aprovada como referência direta.
 
 `identity-master.png` é a tentativa de isolar a vista de três quartos da imagem original preservada em `../chibi-v3/approved-concept.png`. `walk-sheet.png` é a segunda versão da folha de seis quadros. Os prompts novos estão em `prompts.txt`.

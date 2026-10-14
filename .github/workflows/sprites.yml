@@ -73,6 +73,10 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Testar prévia no navegador
         run: node tests/preview.cjs
+      - name: Montar e conferir animação 2D da referência
+        run: |
+          node scripts/build_reference_puppet.cjs art-direction/chibi-reference-puppet/parts.png dist/previews/reference-puppet
+          python scripts/encode_reference_puppet.py dist/previews/reference-puppet
       - name: Guardar pacote de prévias e sprites
         uses: actions/upload-artifact@v4
         with:

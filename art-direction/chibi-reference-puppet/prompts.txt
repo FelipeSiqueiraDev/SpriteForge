@@ -1,0 +1,38 @@
+Ferramenta: imagegen integrada. Prompts novos de preparação de peças para animação 2D.
+
+ATLAS INICIAL
+Use case: identity-preserve / precise-object-edit.
+Asset type: a flat 2D cutout puppet PARTS ATLAS for animating the attached bald chibi character without redrawing him every frame.
+Identity reference: attached approved isolated full-body character. Preserve his upright rounded skull, defined chin, brown anime eyes, shaped eyebrows, warm peach skin, cream sweatshirt with cuffs, cream trousers, brown shoes, dark brown pixel outlines and detailed pixel shading. Reconstruct hidden portions only where necessary to make complete animation parts.
+
+Deliver ONE LANDSCAPE transparent image in an exact 5-column by 2-row grid of equal cells, exactly ten SEPARATE isolated body parts, ONE part per cell. Arrange in this precise reading order:
+TOP ROW
+1. Whole HEAD plus short NECK, three-quarter front view facing screen-right, exact face and skull of reference, no shirt. Keep whole head uncropped.
+2. TORSO with cream sweatshirt, collar, waistband and a short cream-trouser pelvis. No head, neck, arms, hands, long legs or shoes. Include shoulder edges and rounded joint attachment areas.
+3. NEAR UPPER ARM: complete cream sleeve from rounded shoulder cap to rounded elbow joint, hanging vertically DOWN. No forearm or hand.
+4. NEAR FOREARM plus CUFF and relaxed empty HAND: complete forearm from rounded elbow attachment down to the hand, hanging vertically DOWN. No upper arm.
+5. FAR UPPER ARM: complete cream sleeve from rounded shoulder cap to elbow, hanging vertically DOWN.
+BOTTOM ROW
+6. FAR FOREARM plus CUFF and relaxed empty HAND, from elbow attachment down, hanging vertically DOWN.
+7. NEAR THIGH: cream trouser segment from rounded hip attachment to rounded knee joint, vertically DOWN. No shin, foot or shoe.
+8. NEAR SHIN plus BROWN SHOE: cream trouser segment from rounded knee joint down to ankle and complete shoe; shoe toe points screen-right as in reference. No thigh.
+9. FAR THIGH: cream trouser segment from rounded hip attachment to rounded knee joint, vertically DOWN.
+10. FAR SHIN plus BROWN SHOE: from rounded knee down to ankle and whole shoe, toe screen-right, same three-quarter perspective.
+
+Each part should be clearly separated with generous transparent margins in its own cell. Arms and legs MUST be complete single straight segments, not whole limbs or assembled figures. Rounded ends should slightly overlap in a rig, with no exposed holes or cut-away interiors. Keep the same pixel-art finish and cream material, slim limb widths, no inflated tube shapes. Part sizes should retain the reference's anatomical ratios, but do NOT stretch parts to fill their cell. The head is tall and naturally rounded, not flattened or widened.
+Do NOT draw the whole character anywhere. No duplicates, labels, text, grid lines, background, checkerboard, floor, shadows or glow. Genuinely transparent alpha around each of the ten parts.
+
+CORREÇÃO DAS JUNÇÕES
+Use case: precise-object-edit.
+Edit target: attached 5-column by 2-row ten-part puppet atlas.
+Change ONLY the exposed skin-colored joint caps and socket holes into CLOSED CREAM CLOTH, suitable for overlapping animation joints. Keep the exact canvas, part arrangement, bounding sizes, pose, pixel-art detail, head, face, actual hands, shoes, colors and proportions unchanged.
+Specific edits:
+- Cell 1 (head and neck): absolutely unchanged.
+- Cell 2 (shirt torso and pelvis): close the side shoulder sockets with matching cream sweatshirt fabric. No visible bare skin or holes at either shoulder. Keep the neck opening/collar.
+- Cells 3 and 5 (upper sleeves): replace the peach skin ovals at both their top and bottom ends with rounded CLOSED sleeve fabric. There must be NO exposed skin on these upper-arm parts.
+- Cells 4 and 6 (forearm sleeves with hands): replace ONLY their upper elbow peach ovals/openings with matching closed cream sleeve fabric. Preserve the original hands and cuffs exactly.
+- Cells 7 and 9 (thighs): replace all peach ovals at hip and knee ends with matching closed cream trouser fabric. No skin or socket holes anywhere on the thigh parts.
+- Cells 8 and 10 (shin with shoe): replace the peach oval at the top knee with matching closed cream trouser fabric. Keep all shoe, trouser hem and other details exactly.
+The ends should overlap seamlessly in a 2D skeletal puppet, without black rings showing cut cross-sections. Preserve a subtle brown outer silhouette outline, but remove internal dark cut-face ellipse lines across the joint caps. Do not redraw any part, change the head, resize, reposition, crop, add labels or modify the reference style.
+Background must stay genuinely transparent. No glow, floor or cast shadows.
+
