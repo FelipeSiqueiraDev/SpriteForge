@@ -5,6 +5,7 @@ from __future__ import annotations
 import html
 import json
 import re
+import shutil
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -29,6 +30,7 @@ class Bundle:
     spec: dict
     images: dict
     report: dict
+    source_dir: Path
 
 
 def load_bundle(manifest: Path) -> Bundle:
@@ -119,7 +121,7 @@ def load_bundle(manifest: Path) -> Bundle:
               "warnings": warnings, "frames": rows,
               "visual_review_required": ["identidade", "ângulo de câmera", "anatomia",
                                          "contato dos pés", "continuidade do loop", "detalhes de roupa/rosto"]}
-    return Bundle(spec, images, report)
+    return Bundle(spec, images, report, manifest.parent)
 
 
 def write_json(path: Path, data):
@@ -162,13 +164,43 @@ def export_bundle(bundle: Bundle, destination: Path):
         atlas["animations"][action] = atlas_clip
     write_json(destination / "atlas.json", atlas)
     write_json(destination / "report.json", bundle.report)
+    for metadata in ("rig.json", "appearance.json"):
+        source = bundle.source_dir / metadata
+        if source.exists():
+            shutil.copyfile(source, destination / metadata)
+    if (bundle.source_dir / "parts").is_dir():
+        shutil.copytree(bundle.source_dir / "parts", destination / "parts", dirs_exist_ok=True)
     render_preview(bundle, atlas, destination / "index.html")
 
 
 def render_preview(bundle, atlas, path):
-    data = json.dumps(atlas, ensure_ascii=False).replace("<", "\\u003c")
+    data = json.dumps([{"name": bundle.spec["name"], "path": "", "atlas": atlas}], ensure_ascii=False).replace("<", "\\u003c")
     title = html.escape(bundle.spec["name"])
     options = "".join(f'<option value="{a}">{a}</option>' for a in atlas["animations"])
     template = Path(__file__).with_name("preview.html").read_text(encoding="utf-8")
     page = template.replace("__TITLE__", title).replace("__OPTIONS__", options).replace("__ATLAS__", data)
     path.write_text(page, encoding="utf-8")
+
+
+def write_wardrobe(directories, output):
+    output = Path(output)
+    variants = []
+    for directory in directories:
+        directory = Path(directory).resolve()
+        if not directory.is_relative_to(output.resolve().parent):
+            raise ValidationError("As aparências precisam estar dentro da pasta da prévia")
+        try:
+            atlas = json.loads((directory / "atlas.json").read_text(encoding="utf-8"))
+            appearance = json.loads((directory / "appearance.json").read_text(encoding="utf-8"))
+        except (OSError, ValueError) as exc:
+            raise ValidationError(f"Aparência exportada inválida: {exc}") from exc
+        if variants and (atlas["cell"] != variants[0]["atlas"]["cell"] or atlas["pivot"] != variants[0]["atlas"]["pivot"]):
+            raise ValidationError("As aparências precisam usar a mesma célula e apoio")
+        variants.append({"name": appearance["name"], "path": directory.relative_to(output.resolve().parent).as_posix() + "/", "atlas": atlas})
+    if not variants:
+        raise ValidationError("Forneça ao menos uma aparência")
+    options = "".join(f'<option value="{a}">{a}</option>' for a in variants[0]["atlas"]["animations"])
+    data = json.dumps(variants, ensure_ascii=False).replace("<", "\\u003c")
+    template = Path(__file__).with_name("preview.html").read_text(encoding="utf-8")
+    output.write_text(template.replace("__TITLE__", "Corpo-base e aparência — estudos")
+                      .replace("__OPTIONS__", options).replace("__ATLAS__", data), encoding="utf-8")

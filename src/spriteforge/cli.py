@@ -5,7 +5,7 @@ import json
 import sys
 from pathlib import Path
 
-from .core import ValidationError, export_bundle, load_bundle
+from .core import ValidationError, export_bundle, load_bundle, write_wardrobe
 
 
 def main(argv=None):
@@ -13,6 +13,12 @@ def main(argv=None):
     commands = parser.add_subparsers(dest="command", required=True)
     demo = commands.add_parser("demo", help="Gera um boneco técnico; não é um personagem aprovado")
     demo.add_argument("--output", type=Path, default=Path("demo-input"))
+    rig = commands.add_parser("rig", help="Renderiza o corpo-base articulado com uma receita de aparência")
+    rig.add_argument("recipe", type=Path)
+    rig.add_argument("--output", type=Path, default=Path("demo-input"))
+    wardrobe = commands.add_parser("wardrobe", help="Compara aparências já exportadas no mesmo visualizador")
+    wardrobe.add_argument("directories", type=Path, nargs="+")
+    wardrobe.add_argument("--output", type=Path, default=Path("dist/wardrobe.html"))
     for name in ("validate", "build"):
         command = commands.add_parser(name)
         command.add_argument("manifest", type=Path)
@@ -20,7 +26,13 @@ def main(argv=None):
             command.add_argument("--output", type=Path, default=Path("dist"))
     args = parser.parse_args(argv)
     try:
-        if args.command == "demo":
+        if args.command == "wardrobe":
+            write_wardrobe(args.directories, args.output)
+            print(args.output)
+        elif args.command == "rig":
+            from .rig import generate_rig
+            print(generate_rig(args.recipe, args.output))
+        elif args.command == "demo":
             from .demo import generate_demo
             print(generate_demo(args.output))
         else:

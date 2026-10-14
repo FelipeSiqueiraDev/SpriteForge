@@ -2,16 +2,20 @@
 
 Nossa oficina de sprites para o tabuleiro da Equipe Hydra: personagens, NPCs e monstros com arquivos reproduzíveis e revisão visual por direção.
 
-**Primeira entrega: ferramenta técnica funcionando. Os quatro protagonistas ainda não foram desenhados ou animados nesta versão.** O Alosi é o piloto previsto. O manequim abaixo é apenas um teste de exportação, câmera e movimento; seu estilo não é uma proposta aprovada.
+**Corpo-base modular em estudo:** manequim neutro em oito direções, com idle e caminhada. Podemos vestir o mesmo corpo com peças simples sem mudar suas poses. Os quatro protagonistas ainda não foram produzidos; o Alosi continua sendo o piloto previsto após aprovação do corpo-base.
 
-![Manequim de diagnóstico em oito direções](previews/training-dummy-walk.gif)
+![Corpo-base neutro em oito direções](previews/humanoid-base.png)
+
+![Mesmo corpo andando, neutro e vestido com aparência de teste](previews/humanoid-comparison.gif)
+
+As prévias são estudos para aprovação, não personagens finais. O exemplo vestido não é o Alosi. [Como o corpo e as peças funcionam](docs/modular-body.md).
 
 ## Usar direto no GitHub
 
 1. Abra [Actions → SpriteForge](https://github.com/FelipeSiqueiraDev/SpriteForge/actions/workflows/sprites.yml).
 2. Abra a execução mais recente. Para repetir, use **Run workflow → main**.
 3. Após a execução concluir, baixe o pacote **spriteforge-…**, na seção **Artifacts**.
-4. Extraia o ZIP e abra `training-dummy/index.html` para conferir as oito direções. Essa prévia funciona sem servidor e sem conexão, desde que os PNGs estejam na mesma pasta.
+4. Extraia o ZIP e abra `wardrobe.html` para alternar entre corpo-base e aparência de teste, nas oito direções. Essa prévia funciona sem servidor e sem conexão, desde que os PNGs estejam nas pastas exportadas.
 
 O GitHub pode pedir login para baixar o pacote. Não precisa instalar Python ou Aseprite no seu computador para gerar as exportações. A versão inicial não publica uma página na web; a prévia interativa vem dentro do ZIP.
 
@@ -25,6 +29,8 @@ O código e os arquivos de origem são permanentes no repositório. Os pacotes d
 - Relatório de possíveis mudanças de altura, paleta excessiva ou pés/objetos distantes do ponto de apoio.
 - Testes que verificam a preservação de **cada pixel** entre os PNGs de origem e as exportações.
 - Teste de navegador na nuvem para os controles da prévia e larguras de celular/desktop.
+- Corpo-base articulado, roupas seguindo membros e acessórios acompanhando a cabeça.
+- Composição por profundidade e receitas de aparência reproduzíveis.
 
 **O código não reconhece automaticamente óculos, roupa ou identidade.** Também não prova que a caminhada está correta. O ponto de apoio é declarado no manifesto; o relatório mede pixels visíveis, não articulações ou contato real dos pés. Essas decisões precisam de revisão visual.
 
@@ -36,13 +42,13 @@ O código e os arquivos de origem são permanentes no repositório. Os pacotes d
 | Direções / linhas | N, NE, E, SE, S, SW, W, NW |
 | Walk | 6 frames por direção, 100 ms por frame |
 | Idle | 4 frames por direção, 200 ms por frame |
-| Apoio no manequim | x=48, y=80 |
+| Apoio no corpo-base | x=48, y=80 |
 | Transparência | Alpha 0 ou 255; sem antialiasing |
 | Exportação | Sem redimensionar ou recortar a arte |
 
 **N significa para cima da tela; E, para a direita.** São direções de tela, não os eixos do mapa isométrico. Não espelhamos direções automaticamente: detalhes assimétricos precisam ser preservados.
 
-O tamanho da célula não define a altura desenhada de todos os personagens. Não igualamos alturas artificialmente. Precisamos avaliar o modelo aprovado do Alosi e o mapa antes de fixar a câmera, escala e proporções finais.
+O tamanho da célula não define a altura desenhada de todos os personagens. Não igualamos alturas artificialmente. O corpo-base usa câmera elevada de 30° e proporção inspirada nas referências do Alosi e do mapa. Escala, câmera e proporções ainda precisam de aprovação visual.
 
 ## Estrutura
 
@@ -50,7 +56,8 @@ O tamanho da célula não define a altura desenhada de todos os personagens. Nã
 characters/protagonistas/alosi/   piloto previsto, ainda sem sprites finais
 characters/npcs/                 futuros NPCs
 characters/monsters/             futuras criaturas
-src/spriteforge/                 validação, exportação e manequim reproduzível
+templates/humanoid/              corpo-base e aparência de teste
+src/spriteforge/                 rig, composição, validação e exportação
 tests/                          integridade dos arquivos e contrato
 docs/                           padrão e processo artístico
 previews/                       exemplo reproduzível mostrado neste README

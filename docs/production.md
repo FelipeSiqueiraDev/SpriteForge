@@ -19,7 +19,7 @@
 - Não criar caminhada apenas deslizando um recorte rígido de perna ou braço: articulações, ocultação e redesenho por pose precisam fazer sentido.
 - Separar identidade artística e mecânica da animação; um template pode orientar movimento, mas não substituir o desenho do personagem.
 
-O sistema inicial recebe frames desenhados. O manequim é um exemplo programático. A ferramenta **ainda não converte automaticamente uma ilustração em um personagem animado** e não contém um editor Aseprite integrado.
+O sistema recebe frames desenhados e agora também renderiza um corpo-base com peças procedurais simples, documentado em [corpo-base e aparência](modular-body.md). A ferramenta **ainda não converte automaticamente uma ilustração em um personagem animado** e não contém um editor Aseprite integrado.
 
 ## Aprovação visual por direção
 

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "id": "humanoid-outfit-demo",
+  "name": "Mesmo corpo com aparência de teste — não é Alosi",
+  "body_color": "#b9b4a5",
+  "outfit": {
+    "shirt": "#327e87",
+    "trousers": "#38495d",
+    "boots": "#765343"
+  },
+  "hair": "#734831",
+  "beard": "#734831",
+  "glasses": "#302a28",
+  "scar": "#986e64"
+}

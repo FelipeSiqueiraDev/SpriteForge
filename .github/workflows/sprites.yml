@@ -32,6 +32,16 @@ jobs:
           import json
           from pathlib import Path
           ids = {'training-dummy'}
+          appearances = []
+          for recipe in sorted(Path('templates/humanoid').glob('*.json')):
+              character_id = json.loads(recipe.read_text(encoding='utf-8'))['id']
+              if character_id in ids:
+                  raise ValueError(f'ID duplicado: {character_id}')
+              ids.add(character_id)
+              subprocess.run(['spriteforge', 'rig', str(recipe), '--output', 'demo-input'], check=True)
+              subprocess.run(['spriteforge', 'build', f'demo-input/{character_id}/manifest.json', '--output', 'dist'], check=True)
+              appearances.append(f'dist/{character_id}')
+          subprocess.run(['spriteforge', 'wardrobe', *appearances, '--output', 'dist/wardrobe.html'], check=True)
           for manifest in sorted(Path('characters').rglob('manifest.json')):
               character_id = json.loads(manifest.read_text(encoding='utf-8'))['id']
               if character_id in ids:
@@ -39,6 +49,7 @@ jobs:
               ids.add(character_id)
               subprocess.run(['spriteforge', 'build', str(manifest), '--output', 'dist'], check=True)
           PY
+          python scripts/render_rig_previews.py --output dist/previews
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
