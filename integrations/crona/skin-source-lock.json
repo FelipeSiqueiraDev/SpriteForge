@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "repository": "FelipeSiqueiraDev/CRONA",
+  "reference_commit": "f08bea3816fe2af49a98975341b0c6fe4eebf158",
+  "normalization": "UTF-8 text with trailing whitespace removed",
+  "files": {
+    "scripts/3d/codigo/motor.py": "0e37a188d4fb2baf8d9569ff50801c28bfa111bd9863eb9110e4e58c0d7e6680",
+    "scripts/3d/estilo/exportar_px.py": "864a77d6451bbac049e7d6fc2ca9d0d6876d9bbea8e97472ef95007676b45f0a",
+    "scripts/3d/estilo/texturas_px.py": "70af0d20d3f0b860a9226d96106d03e8dd364333af3da2e0c28921538457a9b6",
+    "scripts/3d/estilo/agente_cozinha/base_estilo.py": "43e9e2d5f3cec4d4f79cd9934efdbcb7d8ce91ae9ef0d01d32146a271eb8126a",
+    "scripts/3d/estilo/agente_cozinha/cozinha.py": "bea4462f96d5db525e75b112f4c3e1af59fab686f196a9ca2901cfaaf6321637",
+    "scripts/3d/estilo/agente_cozinha/janela_cozinha.py": "b7e226d74e6a4bbe9ae929050d36fb45276590bbc5952040266bb91e2064c0ae",
+    "scripts/3d/estilo/agente_cozinha/fogo_cozinha.py": "3292d8907a95c0144384db47c9011aeba437af153469efec3dd4d1549f7a2ed0",
+    "scripts/3d/estilo/agente_cozinha/fogo_px.py": "296dcb4b1a1bc08e288bba36c87899d91ef2d200266f96c37e81b7cd1b620813",
+    "scripts/3d/estilo/agente_cozinha/noite.py": "b6e49288a3a0b85b98e6fa0ccad7c90aa31f557dfa6c52fa4cd6f03b8bcf1185"
+  }
+}

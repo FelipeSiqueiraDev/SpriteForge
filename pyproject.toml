@@ -16,4 +16,4 @@ spriteforge = "spriteforge.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-spriteforge = ["preview.html"]
+spriteforge = ["preview.html", "skin-gallery.html"]

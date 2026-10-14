@@ -1,0 +1,30 @@
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Skins · CRONA</title><style>
+:root{color-scheme:dark;font-family:system-ui;background:#101a20;color:#e9e3d4}*{box-sizing:border-box}
+body{max-width:1200px;margin:auto;padding:24px}small,a{color:#f2c879}h1{font-size:32px;margin:8px 0}p{color:#adbdc5;line-height:1.6}
+.controls{display:flex;flex-wrap:wrap;gap:12px}input,select,button{font:inherit;background:#20343d;color:#eee5d4;border:1px solid #47606b;border-radius:8px;padding:10px;min-width:0;max-width:100%}
+input{flex:1}#cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin:24px 0}
+article{border:1px solid #344b54;border-radius:12px;padding:16px;background:#182932}h2{font-size:17px;margin:0 0 8px}code{font-size:12px;color:#afc1c4}
+.badge{display:block;color:#e0b36c;margin:10px 0}.stage{height:250px;display:grid;place-items:center;background:#c8c7bb;border-radius:8px;overflow:hidden}
+.stage img{image-rendering:pixelated;max-width:100%;max-height:100%;object-fit:contain}.views{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #f2c879}.facts{font-size:13px}.pilot{max-width:100%;image-rendering:pixelated;border-radius:12px}
+</style><header><small>SPRITEFORGE / CRONA</small><h1>Biblioteca de skins</h1>
+<p>O CRONA define a peça e seu funcionamento. A skin fornece a aparência no mesmo tamanho e câmera. Objetos pendentes continuam com o desenho procedural quando o integrador usa o catálogo.</p>
+<p id="summary"></p><div class="controls"><input id="query" aria-label="Buscar móvel" placeholder="Buscar móvel, ID ou categoria">
+<select id="filter" aria-label="Estado da skin"><option value="ready">Com skin</option><option value="pending">Pendentes</option><option value="partial">Incompletas</option><option value="all">Todos</option></select></div></header>
+<main id="cards"></main><section><h2>Cozinha da Fazenda · prévia do estilo</h2><p>Planta do cômodo existente, renderizada pelo código do CRONA. A cena inteira é uma prévia; o pacote entrega móveis e texturas separadamente.</p><img class="pilot" src="previews/cozinha.png" alt="Cozinha da Fazenda em pixel art"></section>
+<p><a href="skins.json">Catálogo</a> · <a href="requests.json">Fila de skins</a> · <a href="moveis.patch.json">Entrega para o CRONA</a></p>
+<script>const report=__DATA__,assets=__ASSETS__,el=id=>document.getElementById(id);
+el('summary').textContent=`${report.summary.ready} com skin completa · ${report.summary.pending} pendentes · ${report.summary.partial} incompletas`;
+function render(){const query=el('query').value.toLocaleLowerCase('pt-BR'),filter=el('filter').value;el('cards').replaceChildren();
+for(const row of report.objects.filter(r=>(filter==='all'||r.status===filter)&&(r.name+' '+r.id+' '+r.category).toLocaleLowerCase('pt-BR').includes(query))){
+ const card=document.createElement('article'),title=document.createElement('h2'),id=document.createElement('code'),badge=document.createElement('span');
+ title.textContent=row.name;id.textContent=row.id;badge.className='badge';badge.textContent=row.status==='ready'?'Skin completa':row.status==='partial'?'Faltam vistas / estados':'Aguardando skin';card.append(title,id,badge);
+ const d=row.definition,facts=document.createElement('p');facts.className='facts';facts.textContent=row.type==='floor'?`${d.width}×${d.depth} casas · ${d.states||1} estado(s)`:`Parede · ${d.w}×${d.h} px`;card.append(facts);
+ if(row.skin){const stage=document.createElement('div'),image=document.createElement('img'),controls=document.createElement('div');stage.className='stage';controls.className='views';image.alt=row.name;stage.append(image);let rotation='0',state='0';
+ const update=()=>{const views=state==='0'?row.skin.giros:row.skin.estados[state].giros;image.src=assets+views[rotation].arquivo;image.alt=row.name+', giro '+rotation+', estado '+state};
+ for(const rot of Object.keys(row.skin.giros)){const button=document.createElement('button');button.textContent='Giro '+rot;button.onclick=()=>{rotation=rot;update()};controls.append(button)}
+ if((d.states||1)>1){const select=document.createElement('select');select.setAttribute('aria-label','Estado de '+row.name);for(let s=0;s<d.states;s++){const option=document.createElement('option');option.value=s;option.textContent=row.id==='fogao_lenha'?(s===0?'Apagado':'Aceso'):'Estado '+s;select.append(option)}select.onchange=()=>{state=select.value;update()};controls.append(select)}update();card.append(stage,controls);
+ }else{const message=document.createElement('p');message.textContent='O ID e as medidas já estão registrados. O desenho de código serve de visual provisório até a skin ficar pronta.';card.append(message)}el('cards').append(card);
+}}
+el('query').oninput=render;el('filter').onchange=render;render();</script></html>

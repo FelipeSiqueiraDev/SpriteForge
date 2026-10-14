@@ -22,6 +22,12 @@ def main(argv=None):
     crona = commands.add_parser("crona", help="Exporta tiras e anim.json no formato do tabuleiro CRONA")
     crona.add_argument("manifest", type=Path)
     crona.add_argument("--output", type=Path, default=Path("dist/crona"))
+    skins = commands.add_parser("skins", help="Produz skins de móveis a partir do renderizador do CRONA")
+    skins.add_argument("--source", type=Path, required=True)
+    skins.add_argument("--profile", type=Path, default=Path("skins/profiles/crona-cozy-v1.json"))
+    skins.add_argument("--catalog", type=Path, default=Path("integrations/crona/catalog.json"))
+    skins.add_argument("--lock", type=Path, default=Path("integrations/crona/skin-source-lock.json"))
+    skins.add_argument("--output", type=Path, default=Path("dist/skins/crona-cozy-v1"))
     for name in ("validate", "build"):
         command = commands.add_parser(name)
         command.add_argument("manifest", type=Path)
@@ -29,7 +35,11 @@ def main(argv=None):
             command.add_argument("--output", type=Path, default=Path("dist"))
     args = parser.parse_args(argv)
     try:
-        if args.command == "crona":
+        if args.command == "skins":
+            from .skins import build_skins
+            report = build_skins(args.source,args.profile,args.catalog,args.output,args.lock)
+            print(json.dumps(report["summary"],ensure_ascii=False,indent=2))
+        elif args.command == "crona":
             from .crona import export_crona
             bundle = load_bundle(args.manifest)
             export_crona(bundle, args.output / bundle.spec["id"] / "tabuleiro-3d")

@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "id": "crona-cozy-v1",
+  "name": "CRONA · pixel art aconchegante",
+  "source_repository": "FelipeSiqueiraDev/CRONA",
+  "source_commit": "f08bea3816fe2af49a98975341b0c6fe4eebf158",
+  "native_pixel_scale": 1,
+  "camera": {
+    "tile": [
+      64,
+      32
+    ],
+    "elevation_degrees": 30
+  },
+  "rules": {
+    "outline_pixels": 1,
+    "tones_per_material": [
+      4,
+      6
+    ],
+    "face_light": {
+      "top": 1,
+      "left": 0.84,
+      "right": 0.66
+    },
+    "warm_shadow_rgb": [
+      16,
+      4,
+      -10
+    ],
+    "contact_shadow_levels": [
+      0.74,
+      0.88
+    ],
+    "texture_clusters_min_pixels": 2
+  },
+  "pilot_room": "Fazenda · Cozinha",
+  "recipes": [
+    "armario_cozinha",
+    "armario_cozinha_l",
+    "fogao_lenha",
+    "pia_cozinha",
+    "mesa_cozinha",
+    "chair_wood",
+    "crate_wood",
+    "barrel",
+    "plant"
+  ],
+  "fallback": "procedural_crona",
+  "renderer": "scripts/3d/estilo/exportar_px.py",
+  "room_renderer": "scripts/3d/estilo/agente_cozinha/cozinha.py",
+  "texture_renderer": "scripts/3d/estilo/texturas_px.py",
+  "footprints": {
+    "armario_cozinha": [
+      2,
+      1
+    ],
+    "armario_cozinha_l": [
+      2,
+      3
+    ],
+    "fogao_lenha": [
+      2,
+      1
+    ],
+    "pia_cozinha": [
+      2,
+      1
+    ],
+    "mesa_cozinha": [
+      3,
+      2
+    ],
+    "chair_wood": [
+      1,
+      1
+    ],
+    "crate_wood": [
+      1,
+      1
+    ],
+    "barrel": [
+      1,
+      1
+    ],
+    "plant": [
+      1,
+      1
+    ]
+  }
+}

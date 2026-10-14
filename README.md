@@ -1,6 +1,12 @@
 # SpriteForge
 
-Nossa oficina de sprites para o tabuleiro da Equipe Hydra: personagens, NPCs e monstros com arquivos reproduzíveis e revisão visual por direção.
+Nossa oficina de pixel art para o tabuleiro da Equipe Hydra: personagens, NPCs, monstros e skins dos lugares existentes no CRONA.
+
+**Skins de ambientes:** o CRONA define a planta e os móveis; o SpriteForge organiza a aparência sobre os mesmos IDs. Primeiro lote: nove modelos da cozinha, 40 PNGs nos quatro giros e estados, mais piso e paredes nativos. O catálogo registra 268 objetos e deixa os outros 259 na fila deste perfil. A seleção de skin por cômodo ainda precisa ser integrada no CRONA com o Claude.
+
+![Cozinha do CRONA em pixel art, referência do primeiro perfil](previews/cozinha-skin-piloto.png)
+
+Prévia produzida pelo renderizador que já existe no CRONA. [Ver as nove peças separadas](previews/cozinha-skins-moveis.png) · [Como gerar as skins e consultar a fila](docs/skins.md) · [Contrato e instalação para o Claude](docs/handoff-claude-skins.md) · [Actions → CRONA Skins](https://github.com/FelipeSiqueiraDev/SpriteForge/actions/workflows/skins.yml).
 
 **Corpo-base modular em estudo:** manequim neutro em oito direções, com idle e caminhada. Podemos vestir o mesmo corpo com peças simples sem mudar suas poses. Os quatro protagonistas ainda não foram produzidos; o Alosi continua sendo o piloto previsto após aprovação do corpo-base.
 
