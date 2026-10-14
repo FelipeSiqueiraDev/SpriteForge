@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hydra-spriteforge"
+version = "0.1.0"
+description = "Exportação e validação de sprites para o tabuleiro Hydra"
+requires-python = ">=3.11"
+dependencies = ["Pillow==12.3.0"]
+
+[project.scripts]
+spriteforge = "spriteforge.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+spriteforge = ["preview.html"]

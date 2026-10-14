@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>__TITLE__ · SpriteForge</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,sans-serif;background:#0a141b;color:#e3ecef}
+*{box-sizing:border-box}body{max-width:1120px;margin:auto;padding:24px}
+header{border-bottom:1px solid #29414b;margin-bottom:24px;padding-bottom:20px}
+small{color:#f0c461;font-weight:700;letter-spacing:.13em}h1{font-size:clamp(24px,5vw,36px);margin:10px 0}
+p{line-height:1.6;color:#adbfca;max-width:800px}.controls{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+label{display:flex;gap:8px;align-items:center}button,select,input{font:inherit;accent-color:#f0c461}
+button,select{padding:9px 14px;border:1px solid #44616d;border-radius:8px;background:#1b303b;color:#e3ecef;cursor:pointer}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #f0c461}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:24px}
+article{border:1px solid #29414b;border-radius:12px;padding:16px;background:#101f29}
+.stage{display:grid;place-items:center;overflow:hidden;background:conic-gradient(#20343f 25%,#182a35 0 50%,#20343f 0 75%,#182a35 0) 0 0/20px 20px;border-radius:8px}
+canvas{image-rendering:pixelated;width:100%;max-width:288px;height:auto}h2{font-size:16px;margin:0 0 12px}
+.caption{font-size:12px;color:#acbdc5;display:block;margin-top:10px}a{color:#f0c461}footer{margin-top:28px}
+#status{min-height:24px}.warning{border-left:3px solid #f0c461;padding-left:14px}
+</style>
+<header><small>HYDRA / SPRITEFORGE</small><h1>__TITLE__</h1>
+<p>Oito direções, uma origem fixa. Confira proporção, detalhes, passos e continuidade antes de aprovar o personagem.</p>
+<div class="controls"><label>Ação <select id="action">__OPTIONS__</select></label>
+<button id="pause">Pausar</button><button id="step">Avançar frame</button>
+<label>Velocidade <input id="speed" type="range" min="0.25" max="2" step="0.25" value="1"><output id="rate">1×</output></label>
+<label><input id="guides" type="checkbox" checked>Mostrar ponto de apoio</label></div></header>
+<p id="status" role="status"></p><main class="grid" id="grid"></main>
+<footer><p class="warning">A validação técnica não aprova identidade nem qualidade artística. PNGs preservam os pixels originais; GIFs são apenas prévias com fundo.</p>
+<a href="atlas.json">Atlas para integração</a> · <a href="report.json">Relatório técnico</a></footer>
+<script>
+const atlas=__ATLAS__;
+const el=id=>document.getElementById(id), images={}, cards=[];
+let playing=!matchMedia('(prefers-reduced-motion: reduce)').matches, elapsed=0,last=null,frame=0;
+for(const direction of atlas.direction_order){
+  const article=document.createElement('article'),title=document.createElement('h2'),stage=document.createElement('div');
+  title.textContent=direction;stage.className='stage';const canvas=document.createElement('canvas');
+  [canvas.width,canvas.height]=atlas.cell;canvas.setAttribute('aria-label','Prévia na direção '+direction);
+  const caption=document.createElement('span');caption.className='caption';stage.append(canvas);
+  article.append(title,stage,caption);el('grid').append(article);cards.push({direction,canvas,caption});
+}
+for(const [action,clip] of Object.entries(atlas.animations)){
+  const image=new Image();image.src=clip.sheet;image.onerror=()=>{el('status').textContent='Não foi possível carregar '+clip.sheet+'. Abra esta página junto dos PNGs exportados.'};images[action]=image;
+}
+function pauseLabel(){el('pause').textContent=playing?'Pausar':'Reproduzir'}pauseLabel();
+el('pause').onclick=()=>{playing=!playing;pauseLabel()};
+el('step').onclick=()=>{playing=false;pauseLabel();frame=(frame+1)%atlas.animations[el('action').value].directions.N.length;elapsed=0};
+el('action').onchange=()=>{frame=0;elapsed=0};el('speed').oninput=()=>el('rate').textContent=el('speed').value+'×';
+function tick(now){
+  const action=el('action').value,clip=atlas.animations[action],count=clip.directions.N.length;
+  if(last!==null&&playing){elapsed+=Math.min(now-last,250)*Number(el('speed').value);while(elapsed>=clip.duration_ms){frame=(frame+1)%count;elapsed-=clip.duration_ms}}last=now;
+  for(const {direction,canvas,caption} of cards){
+    const context=canvas.getContext('2d'),box=clip.directions[direction][frame];context.clearRect(0,0,...atlas.cell);context.imageSmoothingEnabled=false;
+    if(images[action].complete&&images[action].naturalWidth)context.drawImage(images[action],box.x,box.y,box.w,box.h,0,0,...atlas.cell);
+    if(el('guides').checked){const[x,y]=atlas.pivot;context.fillStyle='#5fe3d4';context.fillRect(x-3,y,7,1);context.fillRect(x,y-3,1,7)}
+    caption.textContent=`Frame ${frame+1}/${count} · ${clip.duration_ms} ms · apoio ${atlas.pivot.join(', ')}`;
+  }requestAnimationFrame(tick);
+}requestAnimationFrame(tick);
+</script>
+</html>
