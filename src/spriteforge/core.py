@@ -105,8 +105,9 @@ def load_bundle(manifest: Path) -> Bundle:
                 colors = len({rgba for rgba in image.get_flattened_data() if rgba[3]})
                 if colors > 64:
                     warnings.append(f"{label}: {colors} cores visíveis; revisar paleta e possível antialiasing")
-                if abs(y1 - 1 - py) > 6:
-                    warnings.append(f"{label}: último pixel visível está a mais de 6 px do pivot.y; revisar pés/objetos")
+                ground_limit = max(6, round(height*.075))
+                if abs(y1 - 1 - py) > ground_limit:
+                    warnings.append(f"{label}: último pixel visível está a mais de {ground_limit} px do pivot.y; revisar pés/objetos")
                 rows.append({"action": action, "direction": direction, "index": index,
                              "source": relative, "bbox": list(bbox), "visible_colors": colors,
                              "ground_offset_px": y1 - 1 - py})

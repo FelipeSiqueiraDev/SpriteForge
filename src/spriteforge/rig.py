@@ -15,10 +15,8 @@ import numpy as np
 from PIL import Image, ImageFilter
 
 from .core import DIRECTIONS, SAFE_NAME, ValidationError, write_json
+from .crona import CELL, PIVOT, ELEVATION, METRES_PER_MODEL_UNIT, CRONA_COMMIT, ENGINE_TO_SHEET, project_model
 
-CELL = (96, 96)
-PIVOT = (48, 80)
-ELEVATION = math.radians(30)
 LIGHT = np.array([-0.45, 0.35, 0.82])
 LIGHT /= np.linalg.norm(LIGHT)
 PARTS = ("body", "shirt", "trousers", "boots", "hair", "beard", "glasses", "scar")
@@ -214,8 +212,7 @@ def rasterize(scene, direction):
         brightness = .62 + .38 * round(max(0, float(normal @ LIGHT)) * 4) / 4
         rgb = np.array([int(color[i:i+2], 16) for i in (1, 3, 5)])
         shade = np.clip(rgb * brightness, 0, 255).astype(np.uint8)
-        projected = np.column_stack((PIVOT[0] + world[:, 0],
-                                    PIVOT[1] + world[:, 1]*sin-world[:, 2]*cos))
+        projected = project_model(world)
         z = world[:, 1]*cos + world[:, 2]*sin
         low = np.floor(projected.min(axis=0)).astype(int)
         high = np.ceil(projected.max(axis=0)).astype(int)
@@ -286,6 +283,8 @@ def generate_rig(recipe_path: Path, output: Path):
                "cell": list(CELL), "pivot": list(PIVOT), "animations": animations})
     write_json(root / "appearance.json", recipe)
     write_json(root / "rig.json", {"version": 1, "base": "humanoid-v1-study", "elevation_degrees": 30,
+               "profile": "crona-iso-v1", "crona_commit": CRONA_COMMIT,
+               "engine_to_sheet": list(ENGINE_TO_SHEET), "metres_per_model_unit": METRES_PER_MODEL_UNIT,
                "part_ids": {str(i+1): name for i, name in enumerate(PARTS)},
                "pose_coordinates": "local: x=right, y=forward, z=up",
                "stride_world_units_per_loop": 22, "walk_loop_ms": 600,

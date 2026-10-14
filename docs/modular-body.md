@@ -1,6 +1,6 @@
 # Corpo-base e aparência
 
-O primeiro corpo-base é um manequim neutro, careca, sem barba, roupa ou marcas. Tem volume, proporção compacta e câmera elevada de 30°. É um **estudo para aprovação visual**, não um personagem final.
+O primeiro corpo-base é um manequim neutro, careca, sem barba, roupa ou marcas. Tem volume, proporção compacta e câmera elevada de 30°. O canvas é 128×128, calibrado pela projeção e escala do [CRONA](crona-integration.md). É um **estudo para aprovação visual**, não um personagem final.
 
 ## Como vestir o mesmo corpo
 
@@ -41,7 +41,7 @@ As cores usam `#RRGGBB`; `null` remove o acessório ou a roupa inteira. Alterar 
 
 A caminhada usa seis poses e 600 ms por loop. A perna de apoio passa para trás enquanto a outra sobe e avança. Braços e pernas se alternam de forma contralateral. O joelho é calculado com duas seções de comprimento fixo; não esticamos a perna de uma pose para outra.
 
-`rig.json` registra articulações, apoio de cada pé e o deslocamento nominal: 22 unidades do mundo por loop. São dados de diagnóstico e futura sincronização. O tabuleiro ainda precisa relacionar esse deslocamento com sua própria escala e velocidade; a ferramenta não garante ausência de deslizamento durante o movimento do token.
+`rig.json` registra articulações, apoio de cada pé e o deslocamento nominal: 22 unidades do modelo por loop (cerca de 0,624 m no perfil CRONA). A exportação CRONA traduz isso para `casasPorCiclo`. A sincronização precisa ser conferida com o token em movimento no jogo; a ferramenta não prova ausência de deslizamento em uma sessão real.
 
 `parts/` contém máscaras com IDs por parte visível. Elas ajudam a conferir ocultação. Não são camadas completas que restauram automaticamente as superfícies escondidas; para tirar uma roupa, regenere o sprite com esse slot desativado.
 

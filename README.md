@@ -10,6 +10,8 @@ Nossa oficina de sprites para o tabuleiro da Equipe Hydra: personagens, NPCs e m
 
 As prévias são estudos para aprovação, não personagens finais. O exemplo vestido não é o Alosi. [Como o corpo e as peças funcionam](docs/modular-body.md).
 
+**Câmera conferida com o CRONA:** inclinação de 30°, piso 64×32 e escala nativa do jogo. A correspondência entre `Token.dir` e as oito vistas está explícita. [Ver o manequim no piso do CRONA](previews/crona-isometric.png) · [Ver a caminhada no piso](previews/crona-walk.gif) · [Contrato de integração](docs/crona-integration.md).
+
 ## Usar direto no GitHub
 
 1. Abra [Actions → SpriteForge](https://github.com/FelipeSiqueiraDev/SpriteForge/actions/workflows/sprites.yml).
@@ -31,6 +33,7 @@ O código e os arquivos de origem são permanentes no repositório. Os pacotes d
 - Teste de navegador na nuvem para os controles da prévia e larguras de celular/desktop.
 - Corpo-base articulado, roupas seguindo membros e acessórios acompanhando a cabeça.
 - Composição por profundidade e receitas de aparência reproduzíveis.
+- Exportação adicional no formato `anim.json` versão 2 do CRONA, sem instalar os estudos no jogo.
 
 **O código não reconhece automaticamente óculos, roupa ou identidade.** Também não prova que a caminhada está correta. O ponto de apoio é declarado no manifesto; o relatório mede pixels visíveis, não articulações ou contato real dos pés. Essas decisões precisam de revisão visual.
 
@@ -38,17 +41,17 @@ O código e os arquivos de origem são permanentes no repositório. Os pacotes d
 
 | Item | Valor inicial |
 | --- | --- |
-| Célula | 96 × 96 px; configurável por personagem |
+| Célula do rig | 128 × 128 px; PNGs externos podem usar outras células |
 | Direções / linhas | N, NE, E, SE, S, SW, W, NW |
 | Walk | 6 frames por direção, 100 ms por frame |
 | Idle | 4 frames por direção, 200 ms por frame |
-| Apoio no corpo-base | x=48, y=80 |
+| Apoio no corpo-base | x=64, y=112 |
 | Transparência | Alpha 0 ou 255; sem antialiasing |
 | Exportação | Sem redimensionar ou recortar a arte |
 
 **N significa para cima da tela; E, para a direita.** São direções de tela, não os eixos do mapa isométrico. Não espelhamos direções automaticamente: detalhes assimétricos precisam ser preservados.
 
-O tamanho da célula não define a altura desenhada de todos os personagens. Não igualamos alturas artificialmente. O corpo-base usa câmera elevada de 30° e proporção inspirada nas referências do Alosi e do mapa. Escala, câmera e proporções ainda precisam de aprovação visual.
+O tamanho da célula não define a altura desenhada de todos os personagens. Não igualamos alturas artificialmente. A câmera e a escala foram conferidas com o código do CRONA; proporção e qualidade artística continuam em estudo para aprovação visual.
 
 ## Estrutura
 

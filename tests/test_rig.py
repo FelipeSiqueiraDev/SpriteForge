@@ -5,7 +5,7 @@ from pathlib import Path
 import numpy as np
 
 from spriteforge.core import DIRECTIONS, ValidationError
-from spriteforge.rig import PARTS, build_scene, pose, render, validate_recipe
+from spriteforge.rig import CELL, PARTS, build_scene, pose, render, validate_recipe
 
 
 class RigTests(unittest.TestCase):
@@ -26,12 +26,12 @@ class RigTests(unittest.TestCase):
             for direction in DIRECTIONS:
                 for index in (0, 1, 3, 4):
                     image, _, _ = render(recipe, direction, 'walk', index)
-                    self.assertEqual(image.size, (96, 96))
+                    self.assertEqual(image.size, (128, 128))
                     alpha = image.getchannel('A')
                     self.assertEqual(set(alpha.get_flattened_data()), {0, 255})
                     x0, y0, x1, y1 = alpha.getbbox()
                     self.assertGreater(x0, 0); self.assertGreater(y0, 0)
-                    self.assertLess(x1, 96); self.assertLess(y1, 96)
+                    self.assertLess(x1, CELL[0]); self.assertLess(y1, CELL[1])
 
     def test_knee_uses_fixed_lengths_in_every_walk_pose(self):
         for index in range(6):

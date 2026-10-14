@@ -19,6 +19,9 @@ def main(argv=None):
     wardrobe = commands.add_parser("wardrobe", help="Compara aparências já exportadas no mesmo visualizador")
     wardrobe.add_argument("directories", type=Path, nargs="+")
     wardrobe.add_argument("--output", type=Path, default=Path("dist/wardrobe.html"))
+    crona = commands.add_parser("crona", help="Exporta tiras e anim.json no formato do tabuleiro CRONA")
+    crona.add_argument("manifest", type=Path)
+    crona.add_argument("--output", type=Path, default=Path("dist/crona"))
     for name in ("validate", "build"):
         command = commands.add_parser(name)
         command.add_argument("manifest", type=Path)
@@ -26,7 +29,12 @@ def main(argv=None):
             command.add_argument("--output", type=Path, default=Path("dist"))
     args = parser.parse_args(argv)
     try:
-        if args.command == "wardrobe":
+        if args.command == "crona":
+            from .crona import export_crona
+            bundle = load_bundle(args.manifest)
+            export_crona(bundle, args.output / bundle.spec["id"] / "tabuleiro-3d")
+            print(args.output / bundle.spec["id"] / "tabuleiro-3d")
+        elif args.command == "wardrobe":
             write_wardrobe(args.directories, args.output)
             print(args.output)
         elif args.command == "rig":
