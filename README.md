@@ -1,5 +1,15 @@
 # SpriteForge
 
+**Retomada: chibi animado v3.** A direção visual aprovada no chat foi recuperada e preservada com as três referências em [art-direction/chibi-v3](art-direction/chibi-v3/README.md). A nova base tem rosto definido, camiseta/calça claras e sapatos marrons, com **oito direções, quatro frames de parado e seis de caminhada**. Há uma segunda aparência para conferir cabelo, barba, óculos e roupa acompanhando as mesmas poses. Os protagonistas ainda não estão prontos; essa aparência de teste não representa o Alosi.
+
+![Nova base articulada chibi em oito direções](previews/chibi-base.png)
+
+![Caminhada da base chibi, oito direções](previews/chibi-walk.gif)
+
+[No piso do CRONA](previews/chibi-crona.png) · [Comparar v2 e v3](previews/chibi-before-after.png) · [Peças seguindo o mesmo movimento](previews/chibi-modular.gif) · [Frames da passada SE](previews/chibi-walk-SE.png) · [Como gerar e revisar](docs/chibi-animation.md).
+
+O `wardrobe.html` do pacote agora abre na base chibi e inclui as quatro aparências, inclusive as duas anteriores para comparação. A arte conceitual é referência; os PNGs de jogo são produzidos pela geometria articulada. A aparência e a movimentação ainda precisam de revisão visual e teste no tabuleiro antes da produção dos protagonistas.
+
 Nossa oficina de pixel art para o tabuleiro da Equipe Hydra: personagens, NPCs, monstros e skins dos lugares existentes no CRONA.
 
 **Skins de ambientes:** o CRONA define a planta e os móveis; o SpriteForge organiza a aparência sobre os mesmos IDs. Primeiro lote: nove modelos da cozinha, 40 PNGs nos quatro giros e estados, mais piso e paredes nativos. O catálogo registra 268 objetos e deixa os outros 259 na fila deste perfil. A seleção de skin por cômodo ainda precisa ser integrada no CRONA com o Claude.

@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 import math
 import re
+from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
 import numpy as np
@@ -35,9 +36,11 @@ def validate_recipe(recipe):
         raise ValidationError("ID da receita inválido")
     if not isinstance(recipe.get("name"), str) or not recipe["name"].strip():
         raise ValidationError("Nome da receita inválido")
-    allowed = {"version", "id", "name", "body_color", "outfit", "hair", "beard", "glasses", "scar"}
+    allowed = {"version", "id", "name", "model", "body_color", "outfit", "hair", "beard", "glasses", "scar"}
     if set(recipe) - allowed:
         raise ValidationError(f"Campos não suportados na receita: {sorted(set(recipe) - allowed)}")
+    if recipe.get("model", "humanoid-v2") not in ("humanoid-v2", "chibi-v3"):
+        raise ValidationError("Modelo corporal não suportado")
     for key in ("body_color", "hair", "beard", "glasses", "scar"):
         value = recipe.get(key)
         if key == "body_color" and value is None:
@@ -54,7 +57,10 @@ def validate_recipe(recipe):
     return recipe
 
 
-def pose(action, index):
+def pose(action, index, model="humanoid-v2"):
+    if model == "chibi-v3":
+        from .chibi import pose as chibi_pose
+        return chibi_pose(action, index)
     if action not in ("idle", "walk"):
         raise ValidationError("Rig inicial suporta idle e walk")
     count = 4 if action == "idle" else 6
@@ -99,10 +105,9 @@ class Scene:
         self.triangles.append((points, color, part))
         self.normals.append(normals)
 
-    def ellipsoid(self, center, radii, color, part="body", upper_only=False):
+    def ellipsoid(self, center, radii, color, part="body", upper_only=False, rings=8, segments=12):
         center = np.array(center)
         points = []
-        rings, segments = 8, 12
         for progress in np.linspace(0, 1, rings + 1):
             ring = []
             for a in np.linspace(0, math.tau, segments, endpoint=False):
@@ -172,6 +177,9 @@ class Scene:
 
 
 def build_scene(recipe, current_pose):
+    if recipe.get("model") == "chibi-v3":
+        from .chibi import build_scene as chibi_scene
+        return chibi_scene(recipe, current_pose)
     scene = Scene()
     joints, bob = current_pose["joints"], current_pose["bob"]
     skin = recipe["body_color"]
@@ -267,6 +275,11 @@ def rasterize(scene, direction):
         normal /= length
         # A reflexão da base local inverte o winding; usar orientação externa.
         normal *= -1
+        smooth = scene.normals[triangle_index]
+        if getattr(scene, "cull_smooth_backfaces", False) and smooth is not None:
+            facing = np.mean(np.asarray(smooth) @ rotation.T, axis=0)
+            if float(facing @ np.array([0, cos, sin])) < -1e-8:
+                continue
         if color not in material_palettes:
             rgb = np.array([int(color[i:i+2], 16) for i in (1, 3, 5)])
             warm_shadow = np.array([7, 1, -5])
@@ -296,7 +309,6 @@ def rasterize(scene, direction):
         coplanar = np.isclose(sample_z,depth[area],atol=1e-7,rtol=0) & (part_id > parts[area])
         visible = (w0 >= -1e-7) & (w1 >= -1e-7) & (w2 >= -1e-7) & (closer | coplanar)
         depth[area][visible] = sample_z[visible]
-        smooth = scene.normals[triangle_index]
         if smooth is None:
             lighting = np.full(w0.shape,max(0,float(normal@LIGHT)))
         else:
@@ -304,6 +316,8 @@ def rasterize(scene, direction):
             interpolated = w0[...,None]*normals[0]+w1[...,None]*normals[1]+w2[...,None]*normals[2]
             interpolated /= np.maximum(np.linalg.norm(interpolated,axis=-1)[...,None],1e-8)
             lighting = np.maximum(0,interpolated@LIGHT)
+        ambient = getattr(scene, "ambient", 0.)
+        lighting = ambient + (1-ambient)*lighting
         tone = np.clip(np.floor(lighting*5).astype(int),0,4)
         rgba[area][visible,:3] = material_palettes[color][tone[visible]]
         rgba[area][visible,3] = 255
@@ -331,12 +345,31 @@ def rasterize(scene, direction):
 
 def render(recipe, direction, action, index):
     validate_recipe(recipe)
-    current = pose(action, index)
+    current = pose(action, index, recipe.get("model", "humanoid-v2"))
     image, visible_parts = rasterize(build_scene(recipe, current), direction)
     return image, visible_parts, current
 
 
-def generate_rig(recipe_path: Path, output: Path):
+def _render_task(task):
+    recipe, direction, action, index = task
+    return render(recipe, direction, action, index)
+
+
+def _render_frames(recipe, workers):
+    tasks = [(recipe,direction,action,index)
+             for action,count in (("idle",4),("walk",6))
+             for direction in DIRECTIONS for index in range(count)]
+    if workers == 1:
+        yield from map(_render_task,tasks)
+    else:
+        with ProcessPoolExecutor(max_workers=workers) as pool:
+            # map retains the manifest order even when workers finish out of order.
+            yield from pool.map(_render_task,tasks)
+
+
+def generate_rig(recipe_path: Path, output: Path, workers=1):
+    if type(workers) is not int or not 1 <= workers <= 8:
+        raise ValidationError("workers precisa estar entre 1 e 8")
     try:
         recipe = validate_recipe(json.loads(Path(recipe_path).read_text(encoding="utf-8")))
     except (OSError, ValueError) as exc:
@@ -346,12 +379,13 @@ def generate_rig(recipe_path: Path, output: Path):
     root = Path(output) / recipe["id"]
     root.mkdir(parents=True, exist_ok=True)
     animations, pose_records = {}, {}
+    rendered = iter(_render_frames(recipe,workers))
     for action, count, duration in (("idle", 4, 200), ("walk", 6, 100)):
         directions = {}
         for direction in DIRECTIONS:
             paths = []
             for index in range(count):
-                image, parts, current = render(recipe, direction, action, index)
+                image, parts, current = next(rendered)
                 relative = f"frames/{action}/{direction}/{index:02d}.png"
                 path = root / relative
                 path.parent.mkdir(parents=True, exist_ok=True)
@@ -368,12 +402,13 @@ def generate_rig(recipe_path: Path, output: Path):
     write_json(root / "manifest.json", {"version": 1, "id": recipe["id"], "name": recipe["name"],
                "cell": list(CELL), "pivot": list(PIVOT), "animations": animations})
     write_json(root / "appearance.json", recipe)
-    write_json(root / "rig.json", {"version": 1, "base": "humanoid-v2-study", "elevation_degrees": 30,
-               "art_style": "cozy-pixel-v2", "material_tones": 5, "outline_pixels": 1,
+    chibi = recipe.get("model") == "chibi-v3"
+    write_json(root / "rig.json", {"version": 1, "base": "chibi-v3-study" if chibi else "humanoid-v2-study", "elevation_degrees": 30,
+               "art_style": "approved-chibi-v3" if chibi else "cozy-pixel-v2", "material_tones": 5, "outline_pixels": 1,
                "profile": "crona-iso-v1", "crona_commit": CRONA_COMMIT,
                "engine_to_sheet": list(ENGINE_TO_SHEET), "metres_per_model_unit": METRES_PER_MODEL_UNIT,
                "part_ids": {str(i+1): name for i, name in enumerate(PARTS)},
                "pose_coordinates": "local: x=right, y=forward, z=up",
-               "stride_world_units_per_loop": 22, "walk_loop_ms": 600,
+               "stride_world_units_per_loop": 16.8 if chibi else 22, "walk_loop_ms": 600,
                "poses": pose_records})
     return root / "manifest.json"
