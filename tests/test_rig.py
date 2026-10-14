@@ -5,7 +5,7 @@ from pathlib import Path
 import numpy as np
 
 from spriteforge.core import DIRECTIONS, ValidationError
-from spriteforge.rig import CELL, PARTS, build_scene, pose, render, validate_recipe
+from spriteforge.rig import CELL, PARTS, Scene, build_scene, pose, render, rasterize, validate_recipe
 
 
 class RigTests(unittest.TestCase):
@@ -66,6 +66,23 @@ class RigTests(unittest.TestCase):
         second, mask2, _ = render(self.dressed, 'SE', 'walk', 2)
         self.assertEqual(first.tobytes(), second.tobytes())
         self.assertTrue(np.array_equal(mask1, mask2))
+
+    def test_coplanar_clothes_cover_skin_without_overriding_nearer_geometry(self):
+        scene = Scene()
+        triangle = [[-8,0,30],[8,0,30],[0,0,45]]
+        scene.triangle(triangle,'#ccbbaa','body')
+        scene.triangle(triangle,'#527e7c','shirt')
+        _,parts=rasterize(scene,'S')
+        self.assertGreater(np.count_nonzero(parts==PARTS.index('shirt')+1),0)
+        self.assertEqual(np.count_nonzero(parts==PARTS.index('body')+1),0)
+        nearer=[[x,y+2,z] for x,y,z in triangle]
+        scene.triangle(nearer,'#ccbbaa','body')
+        _,parts=rasterize(scene,'S')
+        self.assertGreater(np.count_nonzero(parts==PARTS.index('body')+1),0)
+
+    def test_refined_head_preserves_calibrated_physical_height(self):
+        scene=build_scene(self.base,pose('idle',0))
+        self.assertAlmostEqual(max(vertex[2] for vertices,_,_ in scene.triangles for vertex in vertices),63.5)
 
     def test_invalid_recipe_is_rejected(self):
         for change in ({'body_color': 'invalid'}, {'hair': True}, {'unknown': 'anything'}, {'outfit': {'cape': '#aabbcc'}}):

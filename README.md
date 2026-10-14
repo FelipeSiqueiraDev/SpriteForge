@@ -8,7 +8,7 @@ Nossa oficina de pixel art para o tabuleiro da Equipe Hydra: personagens, NPCs, 
 
 Prévia produzida pelo renderizador que já existe no CRONA. [Ver as nove peças separadas](previews/cozinha-skins-moveis.png) · [Como gerar as skins e consultar a fila](docs/skins.md) · [Contrato e instalação para o Claude](docs/handoff-claude-skins.md) · [Actions → CRONA Skins](https://github.com/FelipeSiqueiraDev/SpriteForge/actions/workflows/skins.yml).
 
-**Corpo-base modular em estudo:** manequim neutro em oito direções, com idle e caminhada. Podemos vestir o mesmo corpo com peças simples sem mudar suas poses. Os quatro protagonistas ainda não foram produzidos; o Alosi continua sendo o piloto previsto após aprovação do corpo-base.
+**Corpo-base refinado v2:** cabeça menor, mãos e pés mais definidos, rosto básico e blocos de sombra sem as manchas triangulares da primeira malha. Manequim neutro em oito direções, com idle e caminhada; as peças seguem as mesmas poses. [Comparar antes e depois](previews/humanoid-before-after.png). Os quatro protagonistas ainda não foram produzidos; o Alosi continua sendo o piloto previsto após aprovação visual do corpo-base.
 
 ![Corpo-base neutro em oito direções](previews/humanoid-base.png)
 

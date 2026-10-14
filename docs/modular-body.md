@@ -1,6 +1,18 @@
 # Corpo-base e aparência
 
-O primeiro corpo-base é um manequim neutro, careca, sem barba, roupa ou marcas. Tem volume, proporção compacta e câmera elevada de 30°. O canvas é 128×128, calibrado pela projeção e escala do [CRONA](crona-integration.md). É um **estudo para aprovação visual**, não um personagem final.
+O corpo-base refinado v2 é um manequim neutro, careca, sem barba, roupa ou marcas. Tem volume, proporção compacta e câmera elevada de 30°. O canvas é 128×128, calibrado pela projeção e escala do [CRONA](crona-integration.md). É um **estudo para aprovação visual**, não um personagem final.
+
+## Revisão visual v2
+
+A cabeça foi reduzida de 18,4 para 14,4 unidades de largura e seu centro visual subiu, mantendo o topo do corpo em z=63,5: a escala física de 1,80 m continua a mesma. Tronco e membros ficaram mais estreitos. Mãos têm polegar definido; pés têm base plana, ponta baixa e quinas chanfradas. Olhos, nariz, sobrancelhas e boca pertencem à geometria do rosto e desaparecem atrás da cabeça nos ângulos traseiros.
+
+O sombreamento usa normais interpoladas antes de quantizar a luz em cinco tons por cor de material. Assim, as faces triangulares da malha deixam de produzir manchas separadas. Contornos externos e encontros de materiais usam uma tinta quente de um pixel. A paleta do corpo e a roupa de teste foram ajustadas para marfim, verde discreto, azul escuro e couro, próximos dos materiais da cozinha. A luz é fixa e consistente, sem glow ou vinheta.
+
+Os pontos das poses e a câmera continuam iguais. A superfície visual da cabeça tem um deslocamento fixo em relação à articulação; cabelo, barba, óculos e cicatriz foram reposicionados para esse formato. Empates de profundidade entre pele e tampas de mangas são resolvidos em favor da roupa, sem sobrepor objetos mais próximos.
+
+[Antes e depois](../previews/humanoid-before-after.png) · [Oito direções](../previews/humanoid-base.png) · [Caminhada e aparência de teste](../previews/humanoid-comparison.gif) · [No piso do CRONA](../previews/crona-isometric.png).
+
+O registro `rig.json` identifica o corpo como `humanoid-v2-study`. Esta revisão melhora o estudo procedural; a identidade e as peças específicas do Alosi ainda precisam ser produzidas.
 
 ## Como vestir o mesmo corpo
 
@@ -44,6 +56,8 @@ A caminhada usa seis poses e 600 ms por loop. A perna de apoio passa para trás 
 `rig.json` registra articulações, apoio de cada pé e o deslocamento nominal: 22 unidades do modelo por loop (cerca de 0,624 m no perfil CRONA). A exportação CRONA traduz isso para `casasPorCiclo`. A sincronização precisa ser conferida com o token em movimento no jogo; a ferramenta não prova ausência de deslizamento em uma sessão real.
 
 `parts/` contém máscaras com IDs por parte visível. Elas ajudam a conferir ocultação. Não são camadas completas que restauram automaticamente as superfícies escondidas; para tirar uma roupa, regenere o sprite com esse slot desativado.
+
+Na revisão v2, a checagem heurística do último pixel sinaliza dois frames do corpo-base e quatro da roupa de teste: as pontas dos pés avançam 11–12 px em relação ao centro da célula durante a passada. Os PNGs mantêm margem e o ponto físico de apoio continua registrado nas poses; não deslocamos ou achatamos os frames para apagar esse aviso. A relação entre passada e movimento do token ainda precisa de conferência no jogo.
 
 ## Próxima aprovação
 
